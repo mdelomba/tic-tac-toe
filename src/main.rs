@@ -39,7 +39,7 @@ impl Board {
         }
     }
 
-    fn contains_winning(&self) -> Option<Player> {
+    fn contains_winner(&self) -> Option<Player> {
         for row in self.cells.iter() {
             if row[0] == row[1] && row[1] == row[2] && row[0] != Cell::Empty {
                 return Some(match row[0] {
@@ -50,7 +50,13 @@ impl Board {
             }
         }
 
-        false
+        None
+    }
+
+    fn is_full(&self) -> bool {
+        self.cells
+            .iter()
+            .all(|row| row.iter().all(|&cell| cell != Cell::Empty))
     }
 }
 
@@ -60,6 +66,8 @@ fn main() {
 
     loop {
         let mut input = String::new();
+
+        println!("Select a spot <0-2> <0-2> for <row> <column>");
 
         io::stdin().read_line(&mut input).unwrap();
         let input: Vec<usize> = input
@@ -74,5 +82,25 @@ fn main() {
         }
 
         let (row, column) = (input[0], input[1]);
+
+        if !board.make_move(row, column, current_player) {
+            println!("Invalid move");
+            continue;
+        }
+
+        if let Some(winner) = board.contains_winner() {
+            println!("Winner is {:?}", winner);
+            break;
+        }
+
+        if board.is_full() {
+            println!("Board is full. It's a tie.");
+            break;
+        }
+
+        current_player = match current_player {
+            Player::X => Player::O,
+            Player::O => Player::X,
+        }
     }
 }
