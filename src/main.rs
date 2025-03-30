@@ -1,4 +1,4 @@
-use std::io::{self, Read};
+use std::io::{self};
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 enum Player {
@@ -88,7 +88,6 @@ fn main() {
 
         io::stdin().read_line(&mut input).unwrap();
         let input: Vec<usize> = input
-            .trim()
             .split_whitespace()
             .filter_map(|s| s.parse().ok())
             .collect();
