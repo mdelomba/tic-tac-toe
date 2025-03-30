@@ -63,6 +63,41 @@ impl Board {
             }
         }
 
+        for col in 0..3 {
+            if self.cells[0][col] == self.cells[1][col]
+                && self.cells[1][col] == self.cells[2][col]
+                && self.cells[0][col] != Cell::Empty
+            {
+                return Some(match self.cells[0][col] {
+                    Cell::X => Player::X,
+                    Cell::O => Player::O,
+                    _ => unreachable!(),
+                });
+            }
+        }
+
+        if self.cells[0][0] == self.cells[1][1]
+            && self.cells[1][1] == self.cells[2][2]
+            && self.cells[0][0] != Cell::Empty
+        {
+            return Some(match self.cells[0][0] {
+                Cell::X => Player::X,
+                Cell::O => Player::O,
+                _ => unreachable!(),
+            });
+        }
+
+        if self.cells[0][2] == self.cells[1][1]
+            && self.cells[1][1] == self.cells[2][0]
+            && self.cells[0][2] != Cell::Empty
+        {
+            return Some(match self.cells[0][2] {
+                Cell::X => Player::X,
+                Cell::O => Player::O,
+                _ => unreachable!(),
+            });
+        }
+
         None
     }
 
