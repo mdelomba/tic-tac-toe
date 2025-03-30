@@ -24,6 +24,19 @@ impl Board {
         }
     }
 
+    fn print(&self) {
+        for row in self.cells.iter() {
+            for cell in row.iter() {
+                match cell {
+                    Cell::Empty => print!("."),
+                    Cell::X => print!("X"),
+                    Cell::O => print!("O"),
+                }
+            }
+            println!("");
+        }
+    }
+
     fn make_move(&mut self, row: usize, col: usize, player: Player) -> bool {
         // This should check if the position provided is valid.
         // If it is then set the board cell to be the player.
@@ -67,7 +80,11 @@ fn main() {
     loop {
         let mut input = String::new();
 
-        println!("Select a spot <0-2> <0-2> for <row> <column>");
+        board.print();
+        println!(
+            "It's {:?}'s turn. Select a spot <0-2> <0-2> for <row> <column>",
+            current_player
+        );
 
         io::stdin().read_line(&mut input).unwrap();
         let input: Vec<usize> = input
@@ -89,11 +106,13 @@ fn main() {
         }
 
         if let Some(winner) = board.contains_winner() {
+            board.print();
             println!("Winner is {:?}", winner);
             break;
         }
 
         if board.is_full() {
+            board.print();
             println!("Board is full. It's a tie.");
             break;
         }
